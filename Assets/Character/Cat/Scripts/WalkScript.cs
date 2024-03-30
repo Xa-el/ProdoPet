@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class CatScript : MonoBehaviour
 {
-    public float speed = 5f;
-    public float movespeed = 0.1f;
-    public float movementTime = 10f;
-    public float currTime = 0f;
+    [SerializeField] private GameObject square;
+    [SerializeField] private float speed = 1.5f;
+    [SerializeField] private float stoppingDistance = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +15,12 @@ public class CatScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movementTime -= Time.deltaTime;
-        if (movementTime >= 0)
-        { 
-                //transform.position = new Vector2(transform.position.x + movespeed * Time.deltaTime, transform.position.y);
-                transform.position = new Vector2(transform.position.x + movespeed * Time.deltaTime, transform.position.y);
+        float distance = Vector2.Distance(transform.position, square.transform.position);
+
+        if (distance > stoppingDistance)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, square.transform.position, speed * Time.deltaTime);
+            transform.right = square.transform.position - transform.position;
         }
         
     }
